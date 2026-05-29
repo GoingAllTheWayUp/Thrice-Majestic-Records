@@ -1,0 +1,16 @@
+desc:VocalLeveler Smoother (controls for Lua Step 7)
+options:gmem=VocalLevelerSmoother
+
+slider1:1<0,4,1{Off,Attack/Release,Crossfade,Exponential,Hybrid}>Smoothing mode
+slider2:10<0,200,1>Attack (ms)
+slider3:80<0,500,1>Release (ms)
+slider4:40<0,500,1>Crossfade (ms)
+slider5:0<0,1,1{Linear,Exponential}>Curve shape
+
+@init
+@slider
+gmem[10] = slider1; // mode
+gmem[11] = slider2; // attack_ms
+gmem[12] = slider3; // release_ms
+gmem[13] = slider4; // crossfade_ms
+gmem[14] = slider5; // curve_shape
