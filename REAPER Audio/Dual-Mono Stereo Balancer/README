@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LYZER: Deterministic Dual-Mono Stereo Balancer</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; margin: 2rem; }
+    code, pre { font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    h1, h2, h3, h4 { margin-top: 1.5rem; }
+    pre { background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }
+    .file-section { border-top: 1px solid #e1e4e8; padding-top: 1.5rem; margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<h1>LYZER: Deterministic Dual-Mono Stereo Balancer</h1>
+
+<p>
+  LYZER is a deterministic, offline, CSV-driven audio analysis and stereo-balancing pipeline designed for REAPER.
+  It analyzes two mono stems (typically left and right), computes loudness differences, and writes calibrated
+  Trim Volume automation to maintain a stable stereo image.
+</p>
+
+<p>
+  The original purpose of this project was to act as a <strong>dual-mono leveler</strong>:
+  reduce whichever side is louder at each moment so the stereo image is preserved without boosting the quieter channel.
+</p>
+
+<h2>Pipeline Overview</h2>
+
+<pre><code>[LYZER Analyzer] → CSV_A / CSV_B
+        ↓
+[DiffEng Difference Engine] → TrackAB_differences.csv
+        ↓
+[ElopeIter Envelope Writer] → Trim Volume automation in REAPER
+</code></pre>
+
+<h2>Requirements</h2>
+
+<h3>Python Version</h3>
+<p><strong>Python 3.8 or newer</strong> is required. Python 3.10–3.12 recommended.</p>
+
+<h3>Python Dependencies</h3>
+
+<pre><code>numpy
+soundfile
+pyloudnorm
+</code></pre>
+
+<p>Install them with:</p>
+
+<pre><code>pip install numpy soundfile pyloudnorm
+</code></pre>
+
+<h3>REAPER Requirements</h3>
+<ul>
+  <li>REAPER 6 or 7</li>
+  <li>Trim Volume envelopes must be visible/enabled on both tracks</li>
+  <li>Two mono tracks selected (A = right, B = left)</li>
+</ul>
+
+<h2>Known Limitation: Off-Center Analysis Window</h2>
+
+<p>
+  In <strong>LYZERv1.0</strong>, the analysis windows are <strong>off-center</strong>:
+</p>
+
+<pre><code>RMS window: [t → t + RMS_WINDOW_MS]
+M_LUFS:     [t → t + M_LUFS_WINDOW_MS]
+ST_LUFS:    [t → t + ST_LUFS_WINDOW_MS]
+</code></pre>
+
+<p>
+  All windows start at time <code>t</code> and extend forward, rather than being centered around <code>t</code>.
+  This means the effective loudness “moment” is shifted forward in time. A centered-window variant can be added later.
+</p>
+
+<h2>Usage</h2>
+
+<h3>1. Analyze WAVs (LYZERv1.0)</h3>
+
+<pre><code>python LYZERv1.0.py
+</code></pre>
+
+<p>Produces per-window metric CSVs for the left and right stems.</p>
+
+<h3>2. Compute Differences (DiffEngv2.0)</h3>
+
+<pre><code>python DiffEngv2.0.py
+</code></pre>
+
+<p>Produces <code>TrackAB_differences.csv</code> with A–B deltas.</p>
+
+<h3>3. Write Envelopes in REAPER (ElopeIterv2.0)</h3>
+
+<ul>
+  <li>Select <strong>exactly two tracks</strong> in REAPER: Track A (right), Track B (left).</li>
+  <li>Run <code>ElopeIterv2.0.lua</code>.</li>
+</ul>
+
+<p>Trim Volume automation is written to both tracks based on the chosen difference metric.</p>
+
+<hr class="file-section" />
+
+<h2>LYZERv1.0 — Offline Analyzer (Python)</h2>
+
+<p><strong>File:</strong> <code>LYZERv1.0.py</code></p>
+
+<h3>Purpose</h3>
+
+<p>
+  Reads WAV files, computes windowed loudness metrics, and writes CSVs for deterministic downstream processing.
+  Stereo WAVs are converted to mono by averaging channels.
+</p>
+
+<h3>Configurable Windows</h3>
+
+<pre><code>STEP_MS           = 20
+RMS_WINDOW_MS     = 50
+M_LUFS_WINDOW_MS  = 400
+ST_LUFS_WINDOW_MS = 3000
+</code></pre>
+
+<p>
+  Each row in the CSV corresponds to a time step of <code>STEP_MS</code>, with RMS/M/ST windows starting at that time
+  and extending forward (off-center behavior).
+</p>
+
+<h3>Metrics</h3>
+
+<ul>
+  <li><strong>RMS</strong> (dB, via <code>lin2db</code>).</li>
+  <li><strong>Peak</strong> (linear amplitude).</li>
+  <li><strong>Momentary LUFS</strong> (via <code>pyloudnorm.Meter.integrated_loudness</code> on the momentary window).</li>
+  <li><strong>Short-Term LUFS</strong>.</li>
+  <li><strong>Integrated LUFS</strong> (full-file, repeated per row for convenience).</li>
+</ul>
+
+<h3>CSV Columns</h3>
+
+<pre><code>project_time, local_time, sample_start, sample_end,
+RMS, Peak, M_LUFS, ST_LUFS, Int_LUFS
+</code></pre>
+
+<hr class="file-section" />
+
+<h2>DiffEngv2.0 — Difference Engine (Python)</h2>
+
+<p><strong>File:</strong> <code>DiffEngv2.0.py</code></p>
+
+<h3>Purpose</h3>
+
+<p>
+  Loads the two analysis CSVs (A and B), ensures they are aligned, and computes A–B differences for each metric.
+  The result is a single CSV used by the envelope writer.
+</p>
+
+<h3>Behavior</h3>
+
+<ul>
+  <li>Skips the human and machine headers.</li>
+  <li>Verifies that both CSVs have the same number of rows.</li>
+  <li>For each row, reads metrics from A and B and computes:
+    <ul>
+      <li><code>RMS_D = RMS_A - RMS_B</code></li>
+      <li><code>Peak_D = Peak_A - Peak_B</code></li>
+      <li><code>M_D = M_A - M_B</code></li>
+      <li><code>ST_D = ST_A - ST_B</code></li>
+      <li><code>Int_D = Int_A - Int_B</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Output Columns</h3>
+
+<pre><code>project_time, local_time,
+RMS_A, RMS_B, RMS_DIFF,
+Peak_A, Peak_B, Peak_DIFF,
+M_LUFS_A, M_LUFS_B, M_LUFS_DIFF,
+ST_LUFS_A, ST_LUFS_B, ST_LUFS_DIFF,
+Int_LUFS_A, Int_LUFS_B, Int_LUFS_DIFF
+</code></pre>
+
+<hr class="file-section" />
+
+<h2>ElopeIterv2.0 — Envelope Writer (REAPER Lua)</h2>
+
+<p><strong>File:</strong> <code>ElopeIterv2.0.lua</code></p>
+
+<h3>Purpose</h3>
+
+<p>
+  Reads <code>TrackAB_differences.csv</code> and writes Trim Volume envelope points to two selected tracks in REAPER.
+  It implements the dual-mono leveler: at each time step, the louder side is attenuated, preserving the stereo image.
+</p>
+
+<h3>Metric Selection</h3>
+
+<pre><code>local METRIC = "RMS_DIFF"
+-- Options: "RMS_DIFF", "M_LUFS_DIFF", "ST_LUFS_DIFF", "Int_LUFS_DIFF", "Peak_DIFF"
+</code></pre>
+
+<h3>Gain Logic (Reduction-Only)</h3>
+
+<pre><code>-- diff_db > 0  → A louder → reduce A
+-- diff_db < 0  → B louder → reduce B
+-- diff_db = 0  → no change
+
+if diff_db > 0 then
+    gainA_db = -diff_db
+    gainB_db = 0.0
+elseif diff_db &lt; 0 then
+    gainA_db = 0.0
+    gainB_db = diff_db  -- negative
+else
+    gainA_db = 0.0
+    gainB_db = 0.0
+end
+</code></pre>
+
+<p>
+  Gains are then scaled by <code>SCALE</code> and converted to Trim Volume envelope values via <code>dB_to_env</code>,
+  which is calibrated using <code>ENV_ZERO</code> and <code>ENV_MIN</code>. Positive dB values are treated as “no boost”
+  in reduction-only mode.
+</p>
+
+<h3>Calibration</h3>
+
+<pre><code>ENV_MAX  = 852.774454406994   -- +6.02 dB (not used in reduction-only)
+ENV_ZERO = 716.217850312608   -- 0.0 dB
+ENV_MIN  = 0.0                -- -150 dB / -inf
+</code></pre>
+
+<p>
+  These values map dB attenuation to REAPER’s internal Trim Volume envelope scale.
+</p>
+
+<h3>Track Selection</h3>
+
+<ul>
+  <li>Exactly two tracks must be selected.</li>
+  <li>Track A: first selected track (right).</li>
+  <li>Track B: second selected track (left).</li>
+</ul>
+
+<p>
+  For each row in the CSV, envelope points are inserted at <code>project_time</code> on both Trim Volume envelopes,
+  then sorted and wrapped in a single undo block.
+</p>
+
+</body>
+</html>
