@@ -1,9 +1,9 @@
-<h1>LYZER: Deterministic Dual-Mono Stereo Balancer</h1>
+<h1>Dual-Mono Stereo Balancer (Deterministic )</h1>
 
 <p>
-  LYZER is a deterministic, offline, CSV-driven audio analysis and stereo-balancing pipeline designed for REAPER.
+  This is a deterministic, offline, CSV-driven audio analysis and stereo-balancing pipeline designed for REAPER.
   It analyzes two mono stems (left and right), computes loudness differences, and writes calibrated Trim Volume
-  automation to maintain a stable stereo image.
+  automation to maintain a stable stereo image. Reduction only.
 </p>
 
 <p>
@@ -13,11 +13,11 @@
 
 <h2>Pipeline Overview</h2>
 
-<pre><code>[LYZER Analyzer] → CSV_A / CSV_B
+<pre><code>[LYZERv1.0.py : Analyzer] → CSV_A / CSV_B
         ↓
-[DiffEng Difference Engine] → TrackAB_differences.csv
+[DiffEngv2.0.py : DiffEng Difference Engine] → TrackAB_differences.csv
         ↓
-[ElopeIter Envelope Writer] → Trim Volume automation in REAPER
+[ElopeIterv2.0.lua : Envelope Writer] → Trim Volume automation in REAPER
 </code></pre>
 
 <h2>Requirements</h2>
@@ -40,8 +40,14 @@ pyloudnorm
 <h3>REAPER Requirements</h3>
 <ul>
   <li>REAPER 6 or 7</li>
+  <li>
+  Render tracks A and B to stems in REAPER to generate the WAV files. These stems preserve the project timeline starting at measure 1.1 (0:00:000). After rendering, you may remove the stem tracks from the REAPER project, but you must hard‑code the WAV file paths into <code>LYZERv1.0.py</code>.  
+  The analyzer produces two CSV files, which must be manually inserted into <code>DiffEngv2.0.py</code>.  
+  The difference engine then outputs a third CSV file, which must be manually assigned inside <code>ElopeIterv2.0.lua</code>.
+</li>
+
   <li>Trim Volume envelopes must be visible/enabled on both tracks</li>
-  <li>Select exactly two mono tracks (A = right, B = left)</li>
+  <li>Select in follwing order (CTRL + CLICK) two mono tracks (A = right, B = left)</li>
 </ul>
 
 <h2>Known Limitation: Off-Center Analysis Window</h2>
