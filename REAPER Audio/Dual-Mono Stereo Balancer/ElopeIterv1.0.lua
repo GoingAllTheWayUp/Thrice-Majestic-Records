@@ -3,15 +3,15 @@
 -- Reads TrackAB_differences.csv
 -- Writes automation to the two selected tracks
 -- ============================================================
-
+X:\ProjectsFolder\Session\projectNAME\TrackAB_differences.csv
 -- LYZERv1.0.py
--- WAV_A = r"R:\New Projects\Feb.2nd.2026\BigDreams\BigsDream_06.09.2026-2157_stems_RIGHT.wav"
--- WAV_B = r"R:\New Projects\Feb.2nd.2026\BigDreams\BigsDream_06.09.2026-2157_stems_LEFT.wav"
+-- WAV_A = r"X:\ProjectsFolder\Session\projectNAME\ReaperProject_stem_TrackName_Left-001.wav"
+-- WAV_B = r"X:\ProjectsFolder\Session\projectNAME\ReaperProject_stem_TrackName_Right-001.wav"
 
--- DiffEngv1.0.py
--- CSV_A = r"R:\New Projects\Feb.2nd.2026\BigDreams\BigsDream_06.09.2026-2157_stems_RIGHT.wav.csv"
--- CSV_B = r"R:\New Projects\Feb.2nd.2026\BigDreams\BigsDream_06.09.2026-2157_stems_LEFT.wav.csv"
--- CSV_DIFF = r"R:\New Projects\Feb.2nd.2026\BigDreams\TrackAB_differences.csv"
+DiffEngv1.0.py
+-- CSV_A = r"X:\ProjectsFolder\Session\projectNAME\ReaperProject_stem_TrackName_Left-001.wav.csv"
+-- CSV_B = r"X:\ProjectsFolder\Session\projectNAME\ReaperProject_stem_TrackName_Right-001.wav.csv"
+-- CSV_DIFF = r"X:\ProjectsFolder\Session\projectNAME\TrackAB_differences.csv"
 
 -- ElopeIterv1.0.lua
 -- You select two tracks in REAPER: (CLICK to SELECT ORDER)
@@ -32,7 +32,7 @@
 ---------------------------------------------------------------
 -- USER SETTINGS
 ---------------------------------------------------------------
-local CSV_DIFF = "R:/New Projects/Feb.2nd.2026/BigDreams/TrackAB_differences.csv"
+local CSV_DIFF = "X:/ProjectsFolder/Session/projectNAME/TrackAB_differences.csv"
 
 -- Which metric drives the gain correction?
 local METRIC = "RMS_DIFF"  
