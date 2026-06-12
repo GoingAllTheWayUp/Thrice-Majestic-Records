@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vowel Formants, Masking Release & Dynamic EQ Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 2rem;
+      background: #0b0c10;
+      color: #e6e6e6;
+    }
+    h1, h2, h3 {
+      color: #ffffff;
+      margin-top: 1.5rem;
+    }
+    h1 { font-size: 1.9rem; }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1.15rem; }
+    p { max-width: 60rem; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 0.5rem 0.6rem;
+      vertical-align: top;
+    }
+    th {
+      background: #151820;
+      color: #f5f5f5;
+      text-align: left;
+    }
+    tr:nth-child(even) td {
+      background: #11141b;
+    }
+
+    .tagline {
+      color: #b0b0b0;
+      font-size: 0.95rem;
+      margin-top: -0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #b8b8b8;
+    }
+    ul { max-width: 60rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Vowel Formants, Masking Release & Dynamic EQ Map</h1>
+  <p class="tagline">
+    A focused reference for teasing vowels out of the mix and improving speech intelligibility.
+  </p>
+</header>
+
+<section>
+  <h2>Overview</h2>
+  <p>
+    This page maps common English vowels to their typical formant regions, suggests EQ treatments to make them
+    more audible, and outlines masking‑release strategies and dynamic EQ moves. It’s meant as a practical
+    companion to your consonant‑control work.
+  </p>
+  <p class="note">
+    All values are approximate ranges; adjust by ear for the specific voice, mic, and mix context.
+  </p>
+</section>
+
+<section>
+  <h2>Vowel Formant Table (Core English Vowels)</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Vowel (IPA / Example)</th>
+        <th>F1 Range (Hz)</th>
+        <th>F2 Range (Hz)</th>
+        <th>Intelligibility Focus Band</th>
+        <th>Typical EQ Treatment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/i/ “ee” (beat)</td>
+        <td>250–350</td>
+        <td>2200–3000</td>
+        <td>2–3 kHz</td>
+        <td>Gentle bell @ 2.4–2.8 kHz, Q 1.5–3, +1 to +3 dB to bring clarity; avoid harshness above 4 kHz.</td>
+      </tr>
+      <tr>
+        <td>/ɪ/ “ih” (bit)</td>
+        <td>300–450</td>
+        <td>1900–2500</td>
+        <td>1.8–2.4 kHz</td>
+        <td>Bell @ 2.0–2.3 kHz, Q 1.5–3, +1 to +3 dB; small low‑mid cleanup @ 300–500 Hz if muddy.</td>
+      </tr>
+      <tr>
+        <td>/e/ or /eɪ/ “ay” (bait)</td>
+        <td>350–500</td>
+        <td>2000–2500</td>
+        <td>2–2.5 kHz</td>
+        <td>Bell @ 2.1–2.4 kHz, Q 1.5–3, +1 to +3 dB; watch masking from guitars/keys in same band.</td>
+      </tr>
+      <tr>
+        <td>/ɛ/ “eh” (bet)</td>
+        <td>450–700</td>
+        <td>1700–2200</td>
+        <td>1.6–2.2 kHz</td>
+        <td>Bell @ 1.8–2.1 kHz, Q 1.5–3, +1 to +3 dB; gentle cut @ 500–700 Hz if boxy.</td>
+      </tr>
+      <tr>
+        <td>/æ/ “a” (bat)</td>
+        <td>600–900</td>
+        <td>1600–2000</td>
+        <td>1.5–2 kHz + 600–900 Hz</td>
+        <td>Low‑mid control @ 600–900 Hz (‑1 to ‑3 dB) to reduce mud; small boost @ 1.7–2.0 kHz for clarity.</td>
+      </tr>
+      <tr>
+        <td>/ɑ/ “ah” (father)</td>
+        <td>700–900</td>
+        <td>1100–1500</td>
+        <td>1–1.5 kHz</td>
+        <td>Bell @ 1.1–1.4 kHz, Q 1.5–3, +1 to +3 dB; trim 700–900 Hz if overly thick.</td>
+      </tr>
+      <tr>
+        <td>/ɔ/ “aw” (thought)</td>
+        <td>500–700</td>
+        <td>900–1300</td>
+        <td>0.9–1.3 kHz</td>
+        <td>Bell @ 1.0–1.2 kHz, Q 1.5–3, +1 to +3 dB; control low‑mid buildup @ 400–700 Hz.</td>
+      </tr>
+      <tr>
+        <td>/ʊ/ “oo” (book)</td>
+        <td>350–550</td>
+        <td>900–1300</td>
+        <td>0.9–1.3 kHz</td>
+        <td>Bell @ 1.0–1.2 kHz, +1 to +3 dB; HPF cleanup if low end masks articulation.</td>
+      </tr>
+      <tr>
+        <td>/u/ “oo” (boot)</td>
+        <td>300–450</td>
+        <td>800–1200</td>
+        <td>0.8–1.2 kHz</td>
+        <td>Bell @ 0.9–1.1 kHz, +1 to +3 dB; keep sub/low‑bass under control to avoid boominess.</td>
+      </tr>
+      <tr>
+        <td>/ə/ “uh” (sofa, schwa)</td>
+        <td>400–600</td>
+        <td>1400–1800</td>
+        <td>1.4–1.8 kHz</td>
+        <td>Bell @ 1.5–1.7 kHz, +1 to +3 dB; small cut @ 400–600 Hz if muddy in dense mixes.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Masking‑Release Cheat Sheet</h2>
+  <p>
+    Masking release is about reducing competing energy so vowels and consonants become audible without brute‑force
+    boosting. Here’s a quick cheat sheet you can use while mixing.
+  </p>
+
+  <ul>
+    <li><strong>Vocals vs. Pads/Keys:</strong> If vowels feel buried, dip 1–3 kHz on pads/keys with dynamic EQ keyed to vocal presence.</li>
+    <li><strong>Vocals vs. Guitars:</strong> Guitars often mask 1.5–3 kHz; carve a small moving notch where the main vowel formants sit.</li>
+    <li><strong>Vocals vs. Cymbals:</strong> Sibilants and bright vowels can be masked by cymbals; tame 6–10 kHz on cymbals instead of over‑boosting vocal air.</li>
+    <li><strong>Vocals vs. Bass:</strong> Low vowels (/ɑ/, /ɔ/, /u/) get masked by bass; use sidechain dynamic EQ on bass around 100–300 Hz.</li>
+    <li><strong>Reverb Masking:</strong> Long, bright reverbs smear intelligibility; roll off 2–4 kHz in the reverb return or shorten pre‑delay.</li>
+    <li><strong>Parallel Processing:</strong> Use parallel “clarity” buses (midrange‑focused compression) instead of boosting the main vocal track.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Dynamic EQ Map for Each Vowel</h2>
+  <p>
+    This table suggests dynamic EQ moves that respond to vowel presence, helping you keep intelligibility stable
+    without static boosts that can sound harsh.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Vowel</th>
+        <th>Primary Dynamic Boost Band</th>
+        <th>Optional Dynamic Cut Band</th>
+        <th>Suggested Use</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/i/ “ee”</td>
+        <td>2.4–2.8 kHz, +1–3 dB when level drops</td>
+        <td>4–6 kHz, ‑1–2 dB if harsh</td>
+        <td>Keep bright vowels intelligible in dense choruses without over‑brightening the whole vocal.</td>
+      </tr>
+      <tr>
+        <td>/ɪ/ “ih”</td>
+        <td>2.0–2.3 kHz, +1–3 dB</td>
+        <td>300–500 Hz, ‑1–3 dB if muddy</td>
+        <td>Clarify mid‑vowels in conversational phrases; great for spoken word and narration.</td>
+      </tr>
+      <tr>
+        <td>/e/ “ay”</td>
+        <td>2.1–2.4 kHz, +1–3 dB</td>
+        <td>500–700 Hz, ‑1–2 dB</td>
+        <td>Help melodic lines cut through guitars and synths without pushing overall vocal level.</td>
+      </tr>
+      <tr>
+        <td>/ɛ/ “eh”</td>
+        <td>1.8–2.1 kHz, +1–3 dB</td>
+        <td>450–700 Hz, ‑1–3 dB</td>
+        <td>Reduce boxiness while keeping intelligibility; useful in close‑mic dialogue.</td>
+      </tr>
+      <tr>
+        <td>/æ/ “a”</td>
+        <td>1.7–2.0 kHz, +1–3 dB</td>
+        <td>600–900 Hz, ‑2–4 dB</td>
+        <td>Control aggressive low‑mid buildup while preserving clarity in emotional, loud phrases.</td>
+      </tr>
+      <tr>
+        <td>/ɑ/ “ah”</td>
+        <td>1.1–1.4 kHz, +1–3 dB</td>
+        <td>700–900 Hz, ‑1–3 dB</td>
+        <td>Keep open vowels present without making the vocal sound boomy or honky.</td>
+      </tr>
+      <tr>
+        <td>/ɔ/ “aw”</td>
+        <td>1.0–1.2 kHz, +1–3 dB</td>
+        <td>400–700 Hz, ‑1–3 dB</td>
+        <td>Clarify darker vowels in ballads and low‑register phrases.</td>
+      </tr>
+      <tr>
+        <td>/ʊ/ “oo” (book)</td>
+        <td>1.0–1.2 kHz, +1–3 dB</td>
+        <td>200–400 Hz, ‑1–3 dB</td>
+        <td>Prevent low vowels from disappearing into bass and kick while keeping warmth.</td>
+      </tr>
+      <tr>
+        <td>/u/ “oo” (boot)</td>
+        <td>0.9–1.1 kHz, +1–3 dB</td>
+        <td>150–350 Hz, ‑1–3 dB</td>
+        <td>Maintain clarity in sustained low vowels without over‑emphasizing low‑end energy.</td>
+      </tr>
+      <tr>
+        <td>/ə/ “uh” (schwa)</td>
+        <td>1.5–1.7 kHz, +1–3 dB</td>
+        <td>400–600 Hz, ‑1–2 dB</td>
+        <td>Keep unstressed syllables intelligible in fast speech and dense arrangements.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Further Investigations & Deeper Prompts</h2>
+  <p>
+    If you want to go deeper on any specific vowel or treatment, here are some directions you can explore or
+    prompt later:
+  </p>
+  <ul>
+    <li><strong>Per‑vowel envelope design:</strong> Ask for envelope shapes (attack/release curves) tailored to each vowel’s formant behavior.</li>
+    <li><strong>Genre‑specific maps:</strong> Request “vowel EQ maps for metal / pop / film dialogue” to adapt these ranges to different production styles.</li>
+    <li><strong>Mic‑dependent adjustments:</strong> Explore how different microphones (dynamic vs. condenser vs. ribbon) shift perceived formant emphasis.</li>
+    <li><strong>Language‑specific vowels:</strong> Ask for formant tables for other languages (e.g., German, French, Japanese) if you work with multilingual material.</li>
+    <li><strong>Formant vs. pitch interactions:</strong> Dive into how pitch changes (melody) interact with formant perception and EQ decisions.</li>
+    <li><strong>Non‑EQ treatments:</strong> Request transient shaping, multiband expansion, or harmonic excitation strategies for a specific vowel or phrase type.</li>
+    <li><strong>Dialogue vs. sung vocals:</strong> Ask for separate maps optimized for spoken word, ADR, podcast, or sung material.</li>
+  </ul>
+</section>
+<section>
+  <h2>Further Reading, Deep‑Dive Prompts & Tools</h2>
+  <p>
+    This section expands on the seven major treatments used in professional dialogue mixing beyond EQ.
+    Each subsection includes recommended areas of study, prompts you can explore later, and tools commonly
+    used in film, broadcast, and high‑end vocal production.
+  </p>
+
+  <!-- 1. Formant-Targeted Compression -->
+  <h3>1. Formant‑Targeted Compression</h3>
+  <p>
+    Instead of compressing the entire vocal, this technique focuses only on the vowel formant regions (F1/F2),
+    helping vowels stay forward without pumping or dulling consonants.
+  </p>
+  <ul>
+    <li><strong>Further Reading:</strong> vowel formants, formant tracking, spectral balance in speech.</li>
+    <li><strong>Deep‑Dive Prompts:</strong>
+      <ul>
+        <li>“Explain how to compress F1 vs F2 separately for clarity.”</li>
+        <li>“Give me a formant‑compression map for each English vowel.”</li>
+        <li>“How do I compress vowels without affecting consonants?”</li>
+      </ul>
+    </li>
+    <li><strong>Tools:</strong> FabFilter Pro‑Q (dynamic), Pro‑MB, TDR Nova, Weiss DS‑1, Praat (formant analysis).</li>
+  </ul>
+
+  <!-- 2. Transient Shaping -->
+  <h3>2. Transient Shaping</h3>
+  <p>
+    Transient shaping enhances or softens consonant attacks without affecting vowel sustain. It’s essential for
+    improving clarity of T/K/P or taming harsh consonants.
+  </p>
+  <ul>
+    <li><strong>Further Reading:</strong> transient cues in speech, consonant articulation, attack/sustain psychoacoustics.</li>
+    <li><strong>Deep‑Dive Prompts:</strong>
+      <ul>
+        <li>“Give me transient‑shaping curves for each consonant family.”</li>
+        <li>“How do I enhance T/K/P without boosting noise?”</li>
+        <li>“Explain transient masking between consonants and drums.”</li>
+      </ul>
+    </li>
+    <li><strong>Tools:</strong> SPL Transient Designer, Oxford TransMod, Neutron Transient Shaper, Kilohearts Transient.</li>
+  </ul>
+
+  <!-- 3. Multiband Expansion -->
+  <h3>3. Multiband Expansion</h3>
+  <p>
+    Expansion restores quiet consonants and fricatives without raising noise floors. It’s widely used in film
+    dialogue to recover intelligibility in soft speech.
+  </p>
+  <ul>
+    <li><strong>Further Reading:</strong> upward expansion, consonant energy distribution, noise‑floor management.</li>
+    <li><strong>Deep‑Dive Prompts:</strong>
+      <ul>
+        <li>“Give me expansion settings for fricatives vs plosives.”</li>
+        <li>“How do I expand consonants without raising breaths?”</li>
+        <li>“Explain multiband expansion for film dialogue.”</li>
+      </ul>
+    </li>
+    <li><strong>Tools:</strong> FabFilter Pro‑MB, Waves C6/F6, Weiss DS‑1, iZotope RX modules.</li>
+  </ul>
+
+  <!-- 4. Dynamic EQ Sidechained to Maskers -->
+  <h3>4. Dynamic EQ Sidechained to Maskers</h3>
+  <p>
+    This technique reduces masking by dynamically dipping competing instruments only when they interfere with
+    vocal formants or consonant bands.
+  </p>
+  <ul>
+    <li><strong>Further Reading:</strong> spectral masking, unmasking strategies, sidechain routing.</li>
+    <li><strong>Deep‑Dive Prompts:</strong>
+      <ul>
+        <li>“Give me a masking‑release map for vocals vs guitars.”</li>
+        <li>“Explain how to unmask vowel formants dynamically.”</li>
+        <li>“Show me how to sidechain dip pads around F2.”</li>
+      </ul>
+    </li>
+    <li><strong>Tools:</strong> FabFilter Pro‑Q (dynamic SC), Kirchhoff EQ, Soothe2, Neutron Unmask.</li>
+  </ul>
+
+  <!-- 5. Exciters / Harmonic Enhancement -->
+  <h3>5. Exciters / Harmonic Enhancement</h3>
+  <p>
+    Exciters add upper harmonics to dull vowels or fricatives, improving clarity without boosting harshness.
+    Used sparingly, they can revive older or muffled recordings.
+  </p>
+  <ul>
+    <li><strong>Further Reading:</strong> harmonic series, spectral enhancement, presence vs harshness.</li>
+    <li><strong>Deep‑Dive Prompts:</strong>
+      <ul>
+        <li>“Give me harmonic enhancement settings for each vowel.”</li>
+        <li>“Explain how to brighten vocals without adding sibilance.”</li>
+        <li>“How do exciters interact with formants?”</li>
+      </ul>
+    </li>
+    <li><strong>Tools:</strong> Aphex Exciter, Ozone Exciter, Saturn 2, Decapitator (subtle).</li>
+  </ul>
+
+  <!-- 6. Formant Shifting -->
+  <h3>6. Formant Shifting (Subtle)</h3>
+  <p>
+    Formant shifting adjusts the resonant shape of the vocal tract without changing pitch. It can clarify muddy
+    vowels, reduce nasality, or improve diction.
+  </p>
+  <ul>
+    <li><strong>Further Reading:</strong> formant theory, vowel identity, spectral envelope manipulation.</li>
+    <li><strong>Deep‑Dive Prompts:</strong>
+      <ul>
+        <li>“Show me how to shift formants to reduce nasality.”</li>
+        <li>“Explain formant correction for muddy vowels.”</li>
+        <li>“How do I match ADR formants to production audio?”</li>
+      </ul>
+    </li>
+    <li><strong>Tools:</strong> Melodyne, Nectar, Little AlterBoy, Waves Ovox.</li>
+  </ul>
+
+  <!-- 7. Micro-Automation -->
+  <h3>7. Micro‑Automation (Gold Standard)</h3>
+  <p>
+    Micro‑automation is the most precise and transparent method for controlling intelligibility. It allows
+    per‑phoneme shaping of vowels and consonants, matching the workflow used in film and broadcast.
+  </p>
+  <ul>
+    <li><strong>Further Reading:</strong> phoneme‑level editing, dialogue mixing workflows, envelope shaping.</li>
+    <li><strong>Deep‑Dive Prompts:</strong>
+      <ul>
+        <li>“Give me automation curves for each vowel formant.”</li>
+        <li>“Explain micro‑automation for dialogue intelligibility.”</li>
+        <li>“Show me how to automate transitions between vowels.”</li>
+      </ul>
+    </li>
+    <li><strong>Tools:</strong> REAPER envelopes, Pro Tools clip gain, Nuendo dialogue tools, RX spectral gain.</li>
+  </ul>
+
+</section>
+
+</body>
+</html>
