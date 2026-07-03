@@ -1,14 +1,14 @@
-# SplashBurst – Audio-Driven Splash Designer  
-<sub>JSFX • Envelope + Noise Layer for drip→splash FX</sub>
+# SplashGrain v3 – Real‑Time Granular Splash  
+<sub>JSFX • Short‑clip splash synthesis using micro‑grains + envelope shaping</sub>
 
 ---
 
 <div align="center">
-  <h3>SplashBurst</h3>
+  <h3>SplashGrain v3</h3>
   <p>
-    Audio-driven splash effect using transient shaping, high-frequency emphasis,<br>
-    and an envelope-controlled reverb + noise layer.<br>
-    Designed to turn short “drip” clips into convincing splash bursts.
+    Real‑time granular splash generator designed for <b>very short drip clips</b>.<br>
+    Uses micro‑grain windows, pitch chaos, and optional audio‑driven envelopes<br>
+    to transform transient droplets into bright, chaotic splash bursts.
   </p>
 </div>
 
@@ -18,7 +18,7 @@
 
 <ul>
   <li><b>Inputs:</b> Left, Right (dry drip / source audio)</li>
-  <li><b>Outputs:</b> Left, Right (splash-processed signal)</li>
+  <li><b>Outputs:</b> Left, Right (granular splash signal)</li>
 </ul>
 
 ---
@@ -36,67 +36,39 @@
   </thead>
   <tbody>
     <tr>
-      <td><b>Attack boost</b> (slider1)</td>
-      <td>0–12 dB</td>
-      <td>6</td>
+      <td><b>Grain Size</b> (slider1)</td>
+      <td>2–30 ms</td>
+      <td>8</td>
       <td>
-        Increases transient attack of the source clip to make the initial impact
-        of the splash more pronounced.
+        Length of each micro‑grain window. Smaller values produce fine spray;<br>
+        larger values create chunkier, more tonal splashes.
       </td>
     </tr>
     <tr>
-      <td><b>Sustain cut</b> (slider2)</td>
-      <td>0–24 dB</td>
-      <td>12</td>
-      <td>
-        Reduces sustain after the transient, tightening the body of the sound so
-        the splash tail dominates.
-      </td>
-    </tr>
-    <tr>
-      <td><b>HF emphasis</b> (slider3)</td>
-      <td>0–12 dB</td>
-      <td>6</td>
-      <td>
-        High-frequency boost above ~4 kHz to create the bright, noisy “spray”
-        character of the splash.
-      </td>
-    </tr>
-    <tr>
-      <td><b>Noise burst level</b> (slider4)</td>
-      <td>-inf–0 dB</td>
-      <td>-12</td>
-      <td>
-        Level of the synthesized high-frequency noise burst layered under the
-        drip to simulate droplets and spray.
-      </td>
-    </tr>
-    <tr>
-      <td><b>Splash tail length</b> (slider5)</td>
-      <td>5–200 ms</td>
-      <td>60</td>
-      <td>
-        Duration of the splash tail envelope; controls how quickly the reverb
-        and noise decay after the transient.
-      </td>
-    </tr>
-    <tr>
-      <td><b>Wet mix</b> (slider6)</td>
+      <td><b>Pitch Chaos</b> (slider2)</td>
       <td>0–100 %</td>
       <td>50</td>
       <td>
-        Blend between dry source and splash-processed signal. Higher values
-        emphasize the synthetic splash tail.
+        Random pitch offset applied per grain. Higher values increase<br>
+        chaotic, watery splash behavior.
       </td>
     </tr>
     <tr>
-      <td><b>Envelope mode</b> (slider7)</td>
-      <td>0–1 {Static, Audio-driven}</td>
+      <td><b>Mix</b> (slider3)</td>
+      <td>0–100 %</td>
+      <td>50</td>
+      <td>
+        Blend between dry input and granular splash output.
+      </td>
+    </tr>
+    <tr>
+      <td><b>Envelope Mode</b> (slider4)</td>
+      <td>0–1 {Manual, Audio‑driven}</td>
       <td>1</td>
       <td>
-        <b>0 = Static:</b> splash tail uses fixed slider values.<br>
-        <b>1 = Audio-driven:</b> splash tail and noise burst follow the input
-        amplitude envelope for more natural drip→splash behavior.
+        <b>0 = Manual:</b> splash intensity follows slider values.<br>
+        <b>1 = Audio‑driven:</b> splash follows input amplitude, making<br>
+        short drips naturally bloom into splash bursts.
       </td>
     </tr>
   </tbody>
@@ -108,20 +80,40 @@
 
 <ul>
   <li>
-    <b>Transient shaping:</b> Attack boost + sustain cut emphasize the initial
-    impact and suppress the body of the sound.
+    <b>Micro‑grain engine:</b> Each grain is taken directly from the current
+    audio sample, ensuring correct behavior even on extremely short clips.
   </li>
   <li>
-    <b>High-frequency spray:</b> HF emphasis and a short noise burst layer
-    create the bright, chaotic splash character.
+    <b>Pitch chaos:</b> Randomized per‑grain pitch offsets create the bright,
+    chaotic “spray” characteristic of water splashes.
   </li>
   <li>
-    <b>Tail envelope:</b> Splash tail length shapes a fast-decaying reverb-like
-    response suitable for very short clips.
+    <b>Window shaping:</b> A triangular grain window softens edges and prevents
+    harsh artifacts.
   </li>
   <li>
-    <b>Audio-driven mode:</b> When Envelope mode is enabled, the plugin derives
-    its splash intensity and tail from the input’s amplitude, making short
-    drips naturally bloom into splashes.
+    <b>Envelope shaping:</b> In audio‑driven mode, splash intensity follows the
+    transient of the drip, producing natural bloom and decay.
+  </li>
+  <li>
+    <b>Short‑clip optimized:</b> No delay lines or circular buffers — the
+    algorithm works directly on the incoming signal, avoiding muffled noise
+    when the source is only a few milliseconds long.
   </li>
 </ul>
+
+---
+
+## Suggested Settings
+
+<ul>
+  <li><b>Grain Size:</b> 6–12 ms</li>
+  <li><b>Pitch Chaos:</b> 40–70 %</li>
+  <li><b>Mix:</b> 40–60 %</li>
+  <li><b>Envelope Mode:</b> Audio‑driven (1)</li>
+</ul>
+
+<p>
+These values produce a bright, splashy burst ideal for transforming short
+drip recordings into expressive water‑like impacts.
+</p>
