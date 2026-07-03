@@ -17,7 +17,7 @@
 ## I/O
 
 <ul>
-  <li><b>Inputs:</b> Left, Right (source audio / drip)</li>
+  <li><b>Inputs:</b> Left, Right (source audio / drip) *Drip" created via reaPitch w/ envelope shapeing</li>
   <li><b>Outputs:</b> Left, Right (granular splash mix)</li>
 </ul>
 
