@@ -1,0 +1,13 @@
+desc:Vocal Leveler Controller (Diagnostic)
+options:gmem=VocalLeveler
+
+slider1:-18<-60,0,0.1>Target RMS (dB)
+slider2:12<0,24,0.1>Max Boost (dB)
+slider3:12<0,24,0.1>Max Cut (dB)
+
+@init
+@slider
+gmem[0] = slider1;
+gmem[1] = slider2;
+gmem[2] = slider3;
+

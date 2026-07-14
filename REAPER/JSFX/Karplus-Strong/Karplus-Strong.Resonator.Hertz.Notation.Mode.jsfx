@@ -1,0 +1,99 @@
+desc:Karplus-Strong Resonator (audio-driven) [Note Step + Hz mode w/ text input]
+
+
+in_pin:left input
+in_pin:right input
+out_pin:left output
+out_pin:right output
+
+slider6:0<0,1,1{MIDI,Hz}>Tuning mode
+slider1:60<24,96,1>MIDI note
+slider7:1000<20,20000,1>Frequency (Hz)
+
+slider2:0.8<0.5,0.999,0.001>Damping
+slider3:0.3<0,1,0.01>Input mix (dry→excite)
+slider4:0.4<0,1,0.01>Lowpass amount
+slider5:0<0,1,0.01>Stereo spread
+
+@init
+sample_rate = srate;
+bufpos = 0;
+
+lpL = 0;
+lpR = 0;
+
+note_names = "C C# D D# E F F# G G# A A# B";
+
+function midi_to_freq(n) (
+  440 * 2^((n-69)/12);
+);
+
+function midi_to_name(n) (
+  octave = floor(n/12) - 1;
+  idx = n % 12;
+  name = str_getchar(note_names, idx*3, 3);
+  sprintf(#out, "%s%d", name, octave);
+  #out;
+);
+
+// linear Hz for now — exponential version will replace this
+function hz_from_slider(t) (
+  20 + t; // * (20000 - 20);
+);
+
+function set_freq(f) (
+  freq = max(20, f);
+  bufsize = max(8, floor(sample_rate/freq));
+  bufpos = 0;
+);
+
+@slider
+slider6 == 0 ? (
+  freq = midi_to_freq(slider1);
+) : (
+  freq = hz_from_slider(slider7);
+);
+
+set_freq(freq);
+
+damp = slider2;
+lp_a = slider4;
+spread = slider5;
+
+@gfx 300 60
+gfx_r = gfx_g = gfx_b = 1;
+gfx_a = 1;
+
+slider6 == 0 ? (
+  note_name = midi_to_name(slider1);
+  note_freq = midi_to_freq(slider1);
+  sprintf(#display, "%s — %.2f Hz", note_name, note_freq);
+) : (
+  sprintf(#display, "Hz mode — %.2f Hz", freq);
+);
+
+gfx_x = 10;
+gfx_y = 10;
+gfx_drawstr(#display);
+
+@sample
+inL = spl0;
+inR = spl1;
+
+excite = (inL + inR) * 0.5 * slider3;
+
+bufpos >= bufsize-1 ? bufpos = 0;
+nextpos = bufpos+1;
+nextpos >= bufsize ? nextpos = 0;
+
+samp = 0.5 * (buf[bufpos] + buf[nextpos]);
+samp *= damp;
+
+lpL += lp_a * (samp - lpL);
+lpR += lp_a * (samp - lpR);
+
+buf[bufpos] = lpL + excite;
+bufpos += 1;
+
+spl0 = lpL;
+spl1 = lpL*(1-spread) + lpR*spread;
