@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Blender 5.x Scene Exporter & Importer</title>
 </head>
 
 <body>
