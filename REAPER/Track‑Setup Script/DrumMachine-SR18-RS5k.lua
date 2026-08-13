@@ -4,9 +4,9 @@
 --https://reaper.fm
 --ReaSamplOmatic5000
 
--- Creates a new track named <strong>SR18 RS5K Kit</strong>
+-- Creates a new track named SR18 RS5K Kit
 -- Prompts the user for a folder containing WAV samples
--- Enumerates all <code>.wav</code> files in the folder
+-- Enumerates all .wav files in the folder
 -- Loads the first 12 samples into RS5K instances
 -- Maps MIDI notes to each pad
 -- Names each RS5K instance using pad number, MIDI note, and filename
